@@ -26,7 +26,7 @@ function createNavBar(){
 // find the boundings of the element to check if the element is in viewport or not
 function checkSectionInViewPort(sec){
     var bounding = sec.getBoundingClientRect();
-    if (bounding.top>=0){ // means section in viewport
+    if (bounding.top>=-150 && bounding.top<=350){ // means section in viewport
          return true;
     }
     else{
@@ -43,17 +43,6 @@ createNavBar();
 const anchorss = document.querySelectorAll('a');
 var isScrolling;
 document.addEventListener('scroll',function(){
-    // active the section when it is in viewport  
-    for(let section of sections){
-           if (checkSectionInViewPort(section)){
-                 if (!section.classList.contains('your-active-class')){
-                      section.classList.add('your-active-class');
-                 }      
-           }
-           else{
-            section.classList.remove('your-active-class');
-           }
-    }
     // hide the navBar during scrolling and show it when stopping 
     document.querySelector(".page__header").style.cssText = "opacity: 0; visibility: hidden;";
     window.clearTimeout( isScrolling );
@@ -70,10 +59,13 @@ document.addEventListener('scroll',function(){
     }
 
     // activate the anchor link in the navBar related to the section that is in the viewport
+    // and activate this section 
     var current = "";
     sections.forEach((section) => {
         const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop-1) {
+        section.classList.remove('your-active-class');
+        if (checkSectionInViewPort(section)){
+            section.classList.add('your-active-class');
             current = section.getAttribute("id"); 
         }
     });
@@ -108,6 +100,4 @@ const topBtn = document.getElementById('myBtn');
 topBtn.addEventListener('click',function(){
     window.scrollTo({top: 0, behavior: 'smooth'});
 });
-
-
 
